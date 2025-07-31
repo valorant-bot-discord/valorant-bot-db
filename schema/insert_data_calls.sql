@@ -1,0 +1,16 @@
+INSERT INTO calls (id_calls, calls_descricao, quantidade_minima_bombs, nome_bomb_especifico)
+VALUES (1, 'Vai bomb A', 2, 'A'),
+       (2, 'Vai bomb B', 2, 'B'),
+       (3, 'Vai bomb C', 3, 'C'),
+       (4, 'Dois tempos A', 2, 'A'),
+       (5, 'Dois tempos B', 2, 'B'),
+       (6, 'Dois tempos C', 3, 'C'),
+       (7, 'Fake A', 2, 'A'),
+       (8, 'Fake B', 2, 'B'),
+       (9, 'Fake C', 3, 'C'),
+       (10, 'APERTA O W NO BOMB A', 2, 'A'),
+       (11, 'APERTA O W NO BOMB B', 2, 'B'),
+       (12, 'Vai Geral Meio', 0, NULL),
+       (13, 'Sacrifica a PISTOLA', 0, NULL),
+       (14, 'SHIFT até 30s', 0, NULL),
+       (15, 'Rotação rápida', 3, NULL);
