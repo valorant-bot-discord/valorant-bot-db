@@ -1,4 +1,4 @@
-INSERT INTO mapas (uuid_mapa_valorant_bot,
+INSERT INTO tb_bot_valorant_mapas (uuid_mapa_valorant_bot,
                    uuid_mapa_valorant_api,
                    nome_mapa,
                    quantidade_bombs)

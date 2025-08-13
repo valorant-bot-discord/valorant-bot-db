@@ -53,11 +53,8 @@ $$;
 -- Tabela de Mapas
 -- ==================================================================================
 
--- Remove tabela se já existir
-DROP TABLE IF EXISTS mapas CASCADE;
-
 -- Cria nova estrutura de mapas
-CREATE TABLE mapas
+CREATE TABLE tb_bot_valorant_mapas
 (
     uuid_mapa_valorant_bot UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     uuid_mapa_valorant_api UUID UNIQUE,
@@ -67,15 +64,15 @@ CREATE TABLE mapas
 );
 
 -- Índices para performance
-CREATE INDEX idx_mapas_nome ON mapas (nome_mapa);
-CREATE INDEX idx_mapas_uuid_valorant_bot ON mapas (uuid_mapa_valorant_bot);
+CREATE INDEX idx_mapas_nome ON tb_bot_valorant_mapas (nome_mapa);
+CREATE INDEX idx_mapas_uuid_valorant_bot ON tb_bot_valorant_mapas (uuid_mapa_valorant_bot);
 
 -- ==================================================================================
 -- Tabela de Calls
 -- ==================================================================================
 
 -- Cria tabela de calls
-CREATE TABLE calls
+CREATE TABLE tb_bot_valorant_calls
 (
     uuid_calls              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     calls_descricao         VARCHAR(255) NOT NULL,
@@ -85,5 +82,5 @@ CREATE TABLE calls
 );
 
 -- Índices para busca
-CREATE INDEX idx_uuid_calls ON calls (uuid_calls);
-CREATE INDEX idx_calls_descricao ON calls (calls_descricao);
+CREATE INDEX idx_uuid_calls ON tb_bot_valorant_calls (uuid_calls);
+CREATE INDEX idx_calls_descricao ON tb_bot_valorant_calls (calls_descricao);
