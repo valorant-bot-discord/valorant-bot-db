@@ -1,4 +1,4 @@
-INSERT INTO calls (uuid_calls,
+INSERT INTO tb_bot_valorant_calls (uuid_calls,
                    calls_descricao,
                    quantidade_minima_bombs,
                    sigla_bomb_especifico)
