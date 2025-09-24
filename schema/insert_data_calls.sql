@@ -1,23 +1,19 @@
 INSERT INTO tb_bot_valorant_calls (uuid_calls,
-                   calls_descricao,
-                   quantidade_minima_bombs,
-                   sigla_bomb_especifico)
-VALUES (gerar_uuid_call(2, 'A'), 'Vai bomb A', 2, 'A'),
-       (gerar_uuid_call(2, 'B'), 'Vai bomb B', 2, 'B'),
-       (gerar_uuid_call(3, 'C'), 'Vai bomb C', 3, 'C'),
-
-       (gerar_uuid_call(2, 'A'), 'Dois tempos A', 2, 'A'),
-       (gerar_uuid_call(2, 'B'), 'Dois tempos B', 2, 'B'),
-       (gerar_uuid_call(3, 'C'), 'Dois tempos C', 3, 'C'),
-
-       (gerar_uuid_call(2, 'A'), 'Fake A', 2, 'A'),
-       (gerar_uuid_call(2, 'B'), 'Fake B', 2, 'B'),
-       (gerar_uuid_call(3, 'C'), 'Fake C', 3, 'C'),
-
-       (gerar_uuid_call(2, 'A'), 'APERTA O W NO BOMB A', 2, 'A'),
-       (gerar_uuid_call(2, 'B'), 'APERTA O W NO BOMB B', 2, 'B'),
-
-       (gerar_uuid_call(0, NULL), 'Vai Geral Meio', 0, NULL),
-       (gerar_uuid_call(0, NULL), 'Sacrifica a PISTOLA', 0, NULL),
-       (gerar_uuid_call(0, NULL), 'SHIFT até 30s', 0, NULL),
-       (gerar_uuid_call(3, NULL), 'Rotação rápida', 3, NULL);
+                                   calls_descricao,
+                                   quantidade_minima_bombs,
+                                   sigla_bomb_especifico)
+VALUES ('db64ef1e-9478-5358-8707-b71160067236', 'Rotação rápida', 2, NULL),
+       ('6ccd2627-df9a-545a-960e-7614b12fd78b', 'Vai bomb A', 2, 'A'),
+       ('bb1ed171-6ca3-5c44-8774-510b786a8b16', 'Vai bomb B', 2, 'B'),
+       ('6f62cd4f-7383-5cf2-b5bd-d1569efeb4ef', 'Vai bomb C', 3, 'C'),
+       ('9a0537ad-6985-53b9-88a1-fb0869a20c7c', 'Dois tempos A', 2, 'A'),
+       ('5a1ef972-5a01-57ed-b7bd-126ac5c4ca27', 'Dois tempos B', 2, 'B'),
+       ('e2f9b8dc-2938-5296-84de-d4231b88e417', 'Dois tempos C', 3, 'C'),
+       ('0588a0e7-1eee-5add-bf5c-6bf810f842eb', 'Fake A', 2, 'A'),
+       ('422007ba-65d5-5148-bbb7-e1bf7918c915', 'Fake B', 2, 'B'),
+       ('ecea79d3-9721-5823-b53f-d5d392b4e6a9', 'Fake C', 3, 'C'),
+       ('9456b0cc-dd67-54e3-a325-3e56a76293a0', 'APERTA O W NO BOMB A', 2, 'A'),
+       ('ebb00efc-4af4-5cb7-a3c6-4287e378fa57', 'APERTA O W NO BOMB B', 2, 'B'),
+       ('f3ddfe01-4006-5aea-8fe4-1640afea88c9', 'Vai Geral Meio', 0, NULL),
+       ('d7bff544-ef6b-5461-8ec2-4227c6d03f44', 'Sacrifica a PISTOLA', 0, NULL),
+       ('6b3e403a-8c7b-585a-8f5d-09181bc39d58', 'SHIFT até 30s', 0, NULL);
