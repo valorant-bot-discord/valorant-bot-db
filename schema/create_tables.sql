@@ -1,54 +1,17 @@
--- Extensões Necessárias
+-- Garantir que a extensão uuid-ossp esteja disponível
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Configuração de Fuso Horário
-SET TIMEZONE TO 'America/Sao_Paulo';
-
 -- ==================================================================================
--- Funções Utilitárias
+-- Tabela de funções (deve ser criada primeiro devido à referência de foreign key)
 -- ==================================================================================
 
--- Gera UUID para mapa usando UUID v5 com namespace fixo e nome do mapa
-CREATE OR REPLACE FUNCTION gerar_uuid_mapa(nome_mapa TEXT)
-    RETURNS UUID
-    LANGUAGE plpgsql
-    IMMUTABLE
-AS
-$$
-BEGIN
-    RETURN uuid_generate_v5(
-            'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11'::uuid, -- namespace fixo
-            'valorant-bot-discord-mm-bot-2024-mapa' || nome_mapa
-           );
-END;
-$$;
+-- Cria tabela de funções
+CREATE TABLE tb_bot_valorant_funcoes_agentes
+(
+    id   UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+    nome VARCHAR(50)                    NOT NULL UNIQUE
+);
 
-ALTER FUNCTION gerar_uuid_mapa(TEXT) OWNER TO postgres;
-
--- Gera UUID para calls com base na quantidade mínima de bombs e sigla
-CREATE OR REPLACE FUNCTION gerar_uuid_call(
-    quantidade_minima_bombs INT,
-    sigla_bomb_especifico TEXT
-)
-    RETURNS UUID
-    LANGUAGE plpgsql
-    IMMUTABLE
-AS
-$$
-DECLARE
-    contexto TEXT;
-BEGIN
-    contexto := 'valorant-bot-discord-mm-bot-2024-calls-' ||
-                quantidade_minima_bombs || '-' ||
-                COALESCE(sigla_bomb_especifico, '') || '-' ||
-                EXTRACT(EPOCH FROM CLOCK_TIMESTAMP())::TEXT;
-
-    RETURN uuid_generate_v5(
-            'a3e1f3c7-5a8d-47c1-90be-b0a9d34309b4'::uuid, -- namespace fixo
-            contexto
-           );
-END;
-$$;
 -- ==================================================================================
 -- Tabela de Mapas
 -- ==================================================================================
@@ -58,12 +21,12 @@ CREATE TABLE tb_bot_valorant_mapas
 (
     uuid_mapa_valorant_bot UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     uuid_mapa_valorant_api UUID UNIQUE,
-    nome_mapa              VARCHAR(50) NOT NULL,
-    quantidade_bombs       INT         NOT NULL,
-    data_importacao_mapa   TIMESTAMPTZ      DEFAULT CURRENT_TIMESTAMP
+    nome_mapa              VARCHAR(100)                                                                  NOT NULL,
+    quantidade_bombs       INT                                                                           NOT NULL,
+    data_importacao_mapa   TIMESTAMP        DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'America/Sao_Paulo') NOT NULL
 );
 
--- Índices para performance
+-- Índices para busca
 CREATE INDEX idx_mapas_nome ON tb_bot_valorant_mapas (nome_mapa);
 CREATE INDEX idx_mapas_uuid_valorant_bot ON tb_bot_valorant_mapas (uuid_mapa_valorant_bot);
 
@@ -75,12 +38,38 @@ CREATE INDEX idx_mapas_uuid_valorant_bot ON tb_bot_valorant_mapas (uuid_mapa_val
 CREATE TABLE tb_bot_valorant_calls
 (
     uuid_calls              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    calls_descricao         VARCHAR(255) NOT NULL,
-    quantidade_minima_bombs INT          NOT NULL,
+    calls_descricao         VARCHAR(255)                                                                  NOT NULL,
+    quantidade_minima_bombs INT                                                                           NOT NULL,
     sigla_bomb_especifico   VARCHAR(1),
-    data_criacao_call       TIMESTAMPTZ      DEFAULT CURRENT_TIMESTAMP
+    data_criacao_call       TIMESTAMP        DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'America/Sao_Paulo') NOT NULL
 );
 
 -- Índices para busca
 CREATE INDEX idx_uuid_calls ON tb_bot_valorant_calls (uuid_calls);
 CREATE INDEX idx_calls_descricao ON tb_bot_valorant_calls (calls_descricao);
+
+-- Constraint para validar sigla_bomb_especifico
+ALTER TABLE tb_bot_valorant_calls
+    ADD CONSTRAINT check_sigla_bomb
+        CHECK (sigla_bomb_especifico IN ('A', 'B', 'C') OR sigla_bomb_especifico IS NULL);
+
+-- ==================================================================================
+-- Tabela de Agentes
+-- ==================================================================================
+
+-- Cria tabela de agentes
+CREATE TABLE tb_bot_valorant_agentes
+(
+    uuid_agente_valorant_bot UUID      DEFAULT gen_random_uuid()                                    NOT NULL PRIMARY KEY,
+    uuid_agente_valorant_api UUID,
+    nome_agente              VARCHAR(100)                                                           NOT NULL UNIQUE,
+    id_funcao_agente         UUID                                                                   NOT NULL
+        CONSTRAINT fk_funcao
+            REFERENCES tb_bot_valorant_funcoes_agentes (id),
+    criado_em                TIMESTAMP DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'America/Sao_Paulo') NOT NULL
+);
+
+-- Índices para busca
+CREATE INDEX idx_agente_uuid_valorant_bot ON tb_bot_valorant_agentes (uuid_agente_valorant_bot);
+CREATE INDEX idx_agente_nome ON tb_bot_valorant_agentes (nome_agente);
+CREATE INDEX idx_agente_funcao ON tb_bot_valorant_agentes (id_funcao_agente);
